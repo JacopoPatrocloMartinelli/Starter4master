@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 
 const errorHandler = require('./middleware/errorHandler');
 const api = require('./api');
@@ -12,6 +13,7 @@ app.use('/api', api);
 
 app.use(errorHandler);
 
+// una route per il test
 if (config.env !== config.production) {
   app.use('/test', (req, res) => {
     res.status(200).json({
@@ -19,5 +21,8 @@ if (config.env !== config.production) {
     });
   });
 }
+
+// il fallback è servire i file
+app.use('*', express.static(path.resolve('./server/public')));
 
 module.exports = app;
